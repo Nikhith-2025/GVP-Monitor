@@ -377,7 +377,10 @@ class MainActivity : AppCompatActivity() {
                     postprocessingTimeLabel.text = "Post-process: ${stats.postprocessTimeMs} ms"
 
                     val classLines = stats.classStats.map { (name, cs) ->
-                        "$name: ${cs.pixels} px (${"%.2f".format(cs.coverage)} %)"
+                        when (name) {
+                            "Person", "Animal" -> "$name: ${cs.objectCount} detected"
+                            else -> "$name: ${cs.pixels} px (${"%.2f".format(cs.coverage)} %)"
+                        }
                     }.joinToString("\n")
                     statsTextView.text = if (classLines.isEmpty()) "No objects detected" else classLines
                 } else {

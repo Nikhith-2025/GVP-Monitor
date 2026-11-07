@@ -75,7 +75,8 @@ class SegmentationHelper(private val context: Context) {
         val className: String,
         val pixels: Int,
         val coverage: Float,
-        val color: Int
+        val color: Int,
+        val objectCount: Int = 0  // Number of individual objects detected
     )
 
     private var lastStats: SegmentationStats? = null
@@ -274,7 +275,7 @@ class SegmentationHelper(private val context: Context) {
     fun getCurrentDelegate(): String {
         return when (currentDelegate) {
             DelegateType.GPU -> if (gpuAvailable) "GPU (TFLite)" else "GPU (Not Available)"
-            DelegateType.NNAPI -> if (nnapiAvailable) "NNAPI" else "NNAPI (Not Available)"
+            DelegateType.NNAPI -> if (nnapiAvailable) "NPU" else "NPU (Not Available)"
             DelegateType.CPU -> "CPU"
         }
     }
@@ -550,15 +551,23 @@ class SegmentationHelper(private val context: Context) {
         val classStatsMap = mutableMapOf<String, ClassStats>()
         var totalSegmentedPixels = 0
 
+        // Count objects per class from detections
+        val objectCounts = mutableMapOf<Int, Int>()
+        for (detection in detections) {
+            objectCounts[detection.classId] = objectCounts.getOrDefault(detection.classId, 0) + 1
+        }
+
         for (classId in 0 until classLabels.size) {
             val uniquePixels = classMasks[classId]!!.count { it }
             if (uniquePixels > 0) {
                 val coverage = (uniquePixels.toFloat() / totalImagePixels) * 100
+                val objectCount = objectCounts.getOrDefault(classId, 0)
                 classStatsMap[classLabels[classId]] = ClassStats(
                     className = classLabels[classId],
                     pixels = uniquePixels,
                     coverage = coverage,
-                    color = classColors[classId] ?: Color.GRAY
+                    color = classColors[classId] ?: Color.GRAY,
+                    objectCount = objectCount
                 )
                 totalSegmentedPixels += uniquePixels
             }
