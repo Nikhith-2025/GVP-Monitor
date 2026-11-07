@@ -1,37 +1,52 @@
 <resources>
-    <string name="app_name">GVP</string>
+    <string name="app_name">GVP Monitor</string>
 
-    <!-- Auto Click -->
-    <string name="auto_click_stopped">Auto Click: Stopped</string>
-    <string name="auto_click_running">Auto Click: Running | Interval: %1$ds | Count: %2$d</string>
-    <string name="auto_click_button">⏱ Auto Click</string>
-    <string name="stop_auto_click">⏹ Stop Auto Click</string>
+    <string name="capture">Capture</string>
+    <string name="gallery">Gallery</string>
+    <string name="auto_button">Auto</string>
+    <string name="back_to_live">Live</string>
+    <string name="camera_preview_description">Camera preview</string>
+    <string name="result_description">Segmentation result</string>
 
-    <!-- Image and View -->
-    <string name="segmented_image">Segmented Image</string>
-    <string name="show_mask_only">🎭 Show Mask Only</string>
-    <string name="show_segmented">🖼 Show Segmented</string>
+    <string name="mode_overlay">Overlay</string>
+    <string name="mode_mask">Mask</string>
+    <string name="mode_compare">Compare</string>
+    <string name="mode_original">Original</string>
 
-    <!-- Color Legend -->
-    <string name="color_legend">Color Legend</string>
-    <string name="animal">Animal</string>
-    <string name="waste">Waste</string>
-    <string name="person">Person</string>
+    <string name="loading_model">Loading model</string>
+    <string name="processing">Analysing image</string>
+    <string name="model_failed">Model failed to load</string>
+    <string name="segmentation_failed">Could not process this image</string>
+    <string name="camera_failed">Could not start the camera</string>
+    <string name="capture_failed">Could not take a photo</string>
+    <string name="camera_needed">Camera access is off. You can still open images from the gallery.</string>
+    <string name="grant_camera">Allow camera</string>
+    <string name="uploaded">Saved and uploaded</string>
+    <string name="upload_failed">Saved on the device, upload failed</string>
 
-    <!-- Statistics -->
-    <string name="segmentation_statistics">Segmentation Statistics</string>
-    <string name="class_label">Class</string>
-    <string name="pixels_label">Pixels</string>
-    <string name="coverage_label_header">Coverage</string>
-    <string name="process_image_prompt">Process an image to see statistics</string>
-    <string name="total_pixels">Total Pixels: 0</string>
-    <string name="total_pixels_value">Total Pixels: %1$s</string>
-    <string name="image_coverage">Image Coverage: 0.00%%</string>
-    <string name="image_coverage_value">Coverage: %.2f%%</string>
-    <string name="processing_time">Processing Time: 0 ms</string>
-    <string name="processing_time_value">Time: %1$d ms</string>
+    <string name="coverage_title">Area covered</string>
+    <string name="empty_value">-</string>
+    <string name="stats_hint">Capture or open an image to see results</string>
+    <string name="pixel_summary">%1$s of %2$s pixels</string>
+    <string name="nothing_found">None</string>
+    <plurals name="objects_found">
+        <item quantity="one">%d found</item>
+        <item quantity="other">%d found</item>
+    </plurals>
+    <string name="timing_total">%1$d ms on %2$s</string>
+    <string name="timing_detail">Prepare %1$d ms, model %2$d ms, draw %3$d ms</string>
 
-    <!-- Buttons -->
-    <string name="take_photo">📷 Take Photo</string>
-    <string name="open_gallery">🖼 Open Gallery</string>
+    <string name="filters_title">Show on image</string>
+    <string name="confidence_title">Minimum confidence</string>
+
+    <string name="choose_processor">Run the model on</string>
+    <string name="gpu_unavailable">GPU unavailable: %1$s</string>
+    <string name="processor_unavailable">That processor is not available</string>
+
+    <string name="auto_title">Auto capture</string>
+    <string name="auto_interval">Every %1$d seconds</string>
+    <string name="auto_start">Start</string>
+    <string name="auto_stop">Stop</string>
+    <string name="auto_running">Auto capture running: %1$d taken</string>
+    <string name="auto_stopped">Auto capture stopped: %1$d taken</string>
 </resources>

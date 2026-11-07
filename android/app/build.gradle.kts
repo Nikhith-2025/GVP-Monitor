@@ -1,8 +1,20 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
 }
+
+// Firebase is optional. The app builds and runs without it, and keeps results on the device.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val firebaseDatabaseUrl = localProperties.getProperty("firebase.databaseUrl", "")
 
 android {
     namespace = "com.example.esw"
@@ -15,8 +27,12 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "FIREBASE_DATABASE_URL", "\"$firebaseDatabaseUrl\"")
+
         ndk {
             abiFilters += listOf("arm64-v8a")
+            // For testing on an x86_64 emulator: ./gradlew assembleDebug -Pemulator
+            if (project.hasProperty("emulator")) abiFilters += "x86_64"
         }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -32,6 +48,11 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +60,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
     }
 
     packaging {
@@ -71,8 +96,6 @@ dependencies {
     // TFLite GPU delegate (OpenGL/Vulkan)
     implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")
 
-    // QNN dependencies removed - using only TFLite GPU, NNAPI, and CPU
-
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-database-ktx")
@@ -81,6 +104,8 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
