@@ -121,7 +121,7 @@ class SerialGUI:
 
                         # Update plot
                         self.ax.clear()
-                        self.ax.plot(self.temperatures, label="Temperature (°C)")
+                        self.ax.plot(self.temperatures, label="Temperature ( C)")
                         self.ax.plot(self.humidities, label="Humidity (%)")
                         self.ax.legend()
                         self.ax.set_title("Sensor Data Over Time")

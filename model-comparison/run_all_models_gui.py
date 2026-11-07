@@ -1,27 +1,9 @@
 """
-Unified Multi-Model Segmentation GUI
-- Places to put model files: ./models/
-- Names expected (see README.md for details)
+Runs one image through every segmentation model in the models folder and shows the
+results side by side, with an overlay, a mask and the coverage for each model.
 
-This GUI will try to load the common models used across the repo:
- - DDRNet23 (TorchScript .pt)
-This GUI will try to load the common models used across the repo:
- - DDRNet23 (TorchScript .pt)
- - FCN-ResNet50 (TorchScript .pt)
- - YOLOv8 / YOLOv11 (Ultralytics .pt)
- - UNet (PyTorch .pt/pth state_dict)
-
-Behavior:
- - Create a tab per model (if model file exists)
- - Select an image and "Run All" to run the same image through all loaded models
- - Shows overlay result per-model and a "masks only" thumbnail plus coverage percent
-
-Notes / assumptions:
- - TorchScript .pt files should be saved with torch.jit.save or be compatible with torch.jit.load
- - If a model is a state_dict, the script will attempt to build a compatible architecture (UNet/SAM/Custom) and load_state_dict
- - YOLO models are loaded via ultralytics.YOLO and must be compatible with that package
-
-This is a convenience front-end. If any model requires special preprocessing / postprocessing not captured here, we fall back to best-effort inference.
+Supported models: YOLOv8 and YOLOv11 (Ultralytics), DDRNet23 and FCN-ResNet50
+(TorchScript), and U-Net (a state_dict). Each one gets a tab if its file exists.
 """
 
 import os
@@ -215,18 +197,18 @@ class MultiModelGUI:
 
         header = tk.Frame(self.root, bg='#22313F')
         header.pack(fill=tk.X)
-        title = tk.Label(header, text='🎯 Multi-Model Segmentation Runner', bg='#22313F', fg='white',
+        title = tk.Label(header, text='Multi-Model Segmentation Runner', bg='#22313F', fg='white',
                          font=('Segoe UI', 16, 'bold'))
         title.pack(side=tk.LEFT, padx=12, pady=10)
 
         btn_frame = tk.Frame(header, bg='#22313F')
         btn_frame.pack(side=tk.RIGHT, padx=12)
 
-        select_btn = ttk.Button(btn_frame, text='📁 Select Image', command=self.select_image, width=16)
+        select_btn = ttk.Button(btn_frame, text='Select Image', command=self.select_image, width=16)
         select_btn.pack(side=tk.LEFT, padx=6)
-        self.run_btn = ttk.Button(btn_frame, text='▶ Run All Models', command=self.run_all, state=tk.DISABLED, width=16)
+        self.run_btn = ttk.Button(btn_frame, text='Run All Models', command=self.run_all, state=tk.DISABLED, width=16)
         self.run_btn.pack(side=tk.LEFT, padx=6)
-        open_models_btn = ttk.Button(btn_frame, text='📂 Open Models Folder', command=lambda: os.startfile(MODEL_DIR) if os.name=='nt' else os.system(f'xdg-open "{MODEL_DIR}"'), width=18)
+        open_models_btn = ttk.Button(btn_frame, text='Open Models Folder', command=lambda: os.startfile(MODEL_DIR) if os.name=='nt' else os.system(f'xdg-open "{MODEL_DIR}"'), width=18)
         open_models_btn.pack(side=tk.LEFT, padx=6)
 
         self.status = tk.Label(self.root, text='Loading models...', anchor='w', bg='#f4f6f7')
@@ -532,10 +514,10 @@ class MultiModelGUI:
                     title = k.replace('_', ' ').title()
                     info_text = f"{title}"
                     if det_count > 0:
-                        info_text += f"  • Count: {det_count}"
-                    info_text += f"  • Pixels: {pixels:,}"
+                        info_text += f"  - Count: {det_count}"
+                    info_text += f"  - Pixels: {pixels:,}"
                     cov = (pixels / self.total_pixels * 100) if self.total_pixels>0 else 0.0
-                    info_text += f"  • {cov:.2f}%"
+                    info_text += f"  - {cov:.2f}%"
 
                     tk.Label(row, text=info_text, bg='#f7f9fa', anchor='w', justify='left').pack(side=tk.LEFT)
 
