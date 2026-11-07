@@ -38,6 +38,10 @@ The full method is in `docs/report.pdf`.
 
 ## The Android app
 
+![The first version of the app running on two QIDK kits](docs/app-on-devices.jpg)
+
+The first version of the app running on two QIDK kits.
+
 Take a photo or pick one from the gallery, and the model runs on the device.
 
 - Runs on the GPU, the NPU (through NNAPI) or the CPU, and can be switched at any time
@@ -48,6 +52,11 @@ Take a photo or pick one from the gallery, and the model runs on the device.
 - Shows the area covered, a breakdown by class, object counts and where the time went
 - Auto capture takes a photo at a set interval, for leaving the device at a site
 - Saves every result on the device, and uploads to Firebase if it is set up
+
+<img src="docs/app-screen.jpg" width="320" alt="The redesigned app screen">
+
+The redesigned screen, drawn from the app's layout. The image is real model output, the
+timings are from the QIDK, and the coverage figures are sample values.
 
 ### How it works
 
